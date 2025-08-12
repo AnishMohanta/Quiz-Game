@@ -113,6 +113,7 @@ questionStatus.innerHTML =`<b>${questionsIndexHistory.length}</b> / <b>${numberO
         li.addEventListener("click", () => handleAnswer(li, index))
     })
 }
+
 const resetQuiz=()=>{
     correctAnswersCount=0
     resetTimer()
