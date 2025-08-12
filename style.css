@@ -138,7 +138,6 @@ body {
   background-color: rgb(1, 49, 49);
   transition: 0.3s ease;
 }
-
 .quiz-header .quiz-timer span {
   font-size: 1.4rem;
 }
