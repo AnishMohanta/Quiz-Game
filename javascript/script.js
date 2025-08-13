@@ -2,22 +2,30 @@ const questionStatus = document.querySelector(".question-status")
 const nextQuestionBtn = document.querySelector(".next-question-btn")
 const answerOprtions = document.querySelector(".answer-options")
 const timerDisplay = document.querySelector(".time-duration")
-const resultContainer = document.querySelector(".result-container")
+const resultContainer = document.querySelector(".resContainer")
 const quizContainer = document.querySelector(".quiz-container")
-const configContainer = document.querySelector(".config-container")
+const configContainer = document.querySelector(".configContainer")
 let quizCategory = "programming"
 const questionsIndexHistory = []
-let currentQuestion = null
-let numberOfQuestions =10
+let currQuestion = null
+let numOfQ =10
 const QUIZ_TIME_LIMIT =10
 let currentTime = QUIZ_TIME_LIMIT;
 let timer= null;
 let correctAnswersCount=0
 
+function stopTimerAnim(){
+    const timerI = document.querySelector(".quiz-timer span")
+    timerI.style.animation ="none"
+}
+
 const resetTimer =()=>{
     clearInterval(timer)
     currentTime= QUIZ_TIME_LIMIT;
     timerDisplay.textContent=`${currentTime}s`
+
+    const timerI = document.querySelector(".quiz-timer span");
+    timerI.style.animation= "pulse 1s infinite ease-in-out"
 }
 const startTimer=()=>{
     timer = setInterval(()=>{
@@ -26,6 +34,7 @@ timerDisplay.textContent=`${currentTime}s`
         if(currentTime<=0){
             clearInterval(timer)
              highlightCorrectAnswer()
+             stopTimerAnim()
              
   answerOprtions.querySelectorAll(".answer-option").forEach((option) => {
         option.style.pointerEvents = "none"
@@ -39,7 +48,7 @@ const showQuizResult=()=>{
 quizContainer.style.display = "none"
 resultContainer.style.display = "block"
 
-const resultText=`You answered <b>${correctAnswersCount}</b> out of <b>${numberOfQuestions}</b> questions correctly.Nice try!`
+const resultText=`You answered <b>${correctAnswersCount}</b> out of <b>${numOfQ}</b> questions correctly.Nice try!`
 
 document.querySelector(".result-message").innerHTML = resultText
 }
@@ -47,7 +56,7 @@ document.querySelector(".result-message").innerHTML = resultText
 const getRandomQuestion = () => {
     const catagoryQuestions = questions.find(cat => cat.category.toLocaleLowerCase() === quizCategory.toLocaleLowerCase()).questions || [];
 
-    if(questionsIndexHistory.length>= Math.min(catagoryQuestions.length,numberOfQuestions)){
+    if(questionsIndexHistory.length>= Math.min(catagoryQuestions.length,numOfQ)){
 return showQuizResult();
     }
 
@@ -62,7 +71,7 @@ return showQuizResult();
 }
 
 const highlightCorrectAnswer = () => {
-    const correctOption = answerOprtions.querySelectorAll(".answer-option")[currentQuestion.correctAnswer];
+    const correctOption = answerOprtions.querySelectorAll(".answer-option")[currQuestion.correctAnswer];
     correctOption.classList.add("correct")
 
     const iconHTML = `<span class="material-symbols-rounded">check_circle</span>`;
@@ -70,7 +79,8 @@ const highlightCorrectAnswer = () => {
 };
 
 const handleAnswer = (option, answerIndex) => {
-    const isCorrect = currentQuestion.correctAnswer === answerIndex;
+    const isCorrect = currQuestion.correctAnswer === answerIndex;
+     stopTimerAnim()
 clearInterval(timer)
  if (isCorrect) {
         correctAnswersCount++
@@ -91,9 +101,9 @@ clearInterval(timer)
 };
 
 const renderQuestion = () => {
-    currentQuestion = getRandomQuestion()
-    if (!currentQuestion) return
-    console.log(currentQuestion)
+    currQuestion = getRandomQuestion()
+    if (!currQuestion) return
+    console.log(currQuestion)
 resetTimer()
     startTimer()
 
@@ -101,11 +111,11 @@ resetTimer()
     answerOprtions.innerHTML = ""
     nextQuestionBtn.style.visibility = "hidden";
 
-    document.querySelector(".question-text").textContent = currentQuestion.question;
+    document.querySelector(".question-text").textContent = currQuestion.question;
 
-questionStatus.innerHTML =`<b>${questionsIndexHistory.length}</b> / <b>${numberOfQuestions}</b> Questions`
+questionStatus.innerHTML =`<b>${questionsIndexHistory.length}</b> / <b>${numOfQ}</b> Questions`
 
-    currentQuestion.options.forEach((option, index) => {
+    currQuestion.options.forEach((option, index) => {
         const li = document.createElement("li")
         li.classList.add("answer-option")
         li.textContent = option
@@ -121,25 +131,25 @@ const resetQuiz=()=>{
 configContainer.style.display="block"
 resultContainer.style.display="none"
 }
-const startQuiz=()=>{
+function startQuiz(){
     quizContainer.style.display="block";
     configContainer.style.display="none";
 quizCategory = configContainer.querySelector(".catagory-option.active").textContent;
 console.log("Category from button:", `"${quizCategory}"`);
-numberOfQuestions =parseInt(configContainer.querySelector(".question-option.active").textContent);
-console.log("Category from button:", `"${numberOfQuestions}"`);
+numOfQ =parseInt(configContainer.querySelector(".questionoption.active").textContent);
+console.log("Category from button:", `"${numOfQ}"`);
 renderQuestion()
 }
 
 
-document.querySelectorAll(".question-option, .catagory-option").forEach(option=>{
+document.querySelectorAll(".questionoption, .catagory-option").forEach(option=>{
     option.addEventListener("click",()=>{
-        option.parentNode.querySelector(".active").classList.remove("active")
+option.parentNode.querySelector(".active").classList.remove("active")
         option.classList.add("active")
     })
 })
 // renderQuestion()
 
 nextQuestionBtn.addEventListener("click", renderQuestion)
-document.querySelector(".start-quiz-btn").addEventListener("click", startQuiz)
+document.querySelector(".start-quizButton").addEventListener("click", startQuiz)
 document.querySelector(".try-again-btn").addEventListener("click", resetQuiz)
