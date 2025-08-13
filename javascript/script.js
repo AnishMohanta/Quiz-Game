@@ -149,7 +149,6 @@ option.parentNode.querySelector(".active").classList.remove("active")
     })
 })
 // renderQuestion()
-
 nextQuestionBtn.addEventListener("click", renderQuestion)
 document.querySelector(".start-quizButton").addEventListener("click", startQuiz)
 document.querySelector(".try-again-btn").addEventListener("click", resetQuiz)
