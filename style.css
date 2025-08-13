@@ -306,6 +306,7 @@ button, .catagory-option, .questionoption {
 h1, h2, .quiz-title, .result-title {
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.35);
 }
+
 .next-question-btn {
   display: inline-flex;
   gap: 5px;
