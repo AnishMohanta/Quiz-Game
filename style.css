@@ -252,10 +252,10 @@ color:#721C24;
   border-image: linear-gradient(to right, #ffffff55, #ffffff00) 1;
     
 }
-.quiz-footer.question-status{
+.quiz-footer.questionstatus{
     font-weight: 500;
 }
-.quiz-footer.question-status b,
+.quiz-footer.questionstatus b,
 .resContainer .result-message b{
     font-weight: 600;
 }
