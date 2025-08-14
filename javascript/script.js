@@ -16,16 +16,17 @@ let currentTime = Quiz_TIME_Limit;
 
 let timer = null;
 let correctAnswersCount = 0
-
+let toggle= false
 
 document.addEventListener("visibilitychange", () => {
     if (document.hidden && quizContainer.style.display === "block") {
+        toggle= true;
         clearInterval(timer)
         quizContainer.style.display = "none"
 
       
         resultContainer.style.display = "block";
-
+document.querySelector(".resContainer .result-img").src = "thumbs-down.png";
         document.querySelector(".result-message").innerHTML = `Quiz ended because you tried to cheat<br>You answered <b>${correctAnswersCount}</b> out of <b>${numOfQ}</b> questions correctly.`
     }
 });
@@ -160,8 +161,9 @@ const renderQuestion = () => {
 
 const resetQuiz = () => {
     correctAnswersCount = 0
+   
     resetTimer()
-
+ toggle=false
     QIndexHistory.length = 0;
     configContainer.style.display = "block"
 
